@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Édition d'un Menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Restaurant</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/menus">Menus</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/plats">Plats</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 th:text="${menu.id == null ? 'Nouveau Menu' : 'Modifier le Menu'}">Édition d'un Menu</h1>
+        
+        <form th:action="@{${menu.id == null ? '/menus/create' : '/menus/edit/' + menu.id}}" 
+              th:object="${menu}" method="post" class="mt-4">
+            <div class="form-group">
+                <label for="nom">Nom</label>
+                <input type="text" class="form-control" id="nom" th:field="*{nom}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="prix">Prix</label>
+                <input type="number" step="0.01" class="form-control" id="prix" th:field="*{prix}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="plats">Plats</label>
+                <select multiple class="form-control select2" id="plats" th:field="*{plats}" required>
+                    <option th:each="plat : ${plats}"
+                            th:value="${plat.id}"
+                            th:text="${plat.nom + ' (' + plat.categorie.nom + ') - ' + plat.nbCalories + ' cal'}">
+                        Plat
+                    </option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="/menus" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: 'Sélectionnez les plats',
+                width: '100%'
+            });
+        });
+    </script>
+</body>
+</html> 

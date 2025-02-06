@@ -1,6 +1,9 @@
 package iut.fr.projetSpring2025.model;
 
-import javax.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Categorie {
@@ -9,7 +12,51 @@ public class Categorie {
     private Long id;
     private String nom;
 
-    // Pas de CRUD, donc pas de méthodes supplémentaires
+    // Constructeurs
+    public Categorie() {
+    }
 
-    // Getters et Setters
+    public Categorie(String nom) {
+        this.nom = nom;
+    }
+
+    // Getters
+    public Long getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    // Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    // Méthodes utilitaires
+    @Override
+    public String toString() {
+        return "Categorie{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Categorie categorie = (Categorie) o;
+        return id != null && id.equals(categorie.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 } 

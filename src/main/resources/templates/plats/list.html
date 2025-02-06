@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Plats</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Restaurant</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/menus">Menus</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/plats">Plats</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Liste des Plats</h1>
+            <a href="/plats/create" class="btn btn-primary">Nouveau Plat</a>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Filtres</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/plats}" method="get" class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="categorie">Catégorie</label>
+                            <select class="form-control" id="categorie" name="categorie">
+                                <option value="">Toutes les catégories</option>
+                                <!-- Les options seront ajoutées dynamiquement -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="caloriesMin">Calories min</label>
+                            <input type="number" class="form-control" id="caloriesMin" name="caloriesMin">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="caloriesMax">Calories max</label>
+                            <input type="number" class="form-control" id="caloriesMax" name="caloriesMax">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary mt-4">Filtrer</button>
+                        <a href="/plats" class="btn btn-secondary mt-4">Réinitialiser</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Catégorie</th>
+                        <th>Calories</th>
+                        <th>Lipides</th>
+                        <th>Protéines</th>
+                        <th>Glucides</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="plat : ${plats}">
+                        <td th:text="${plat.nom}">Nom du plat</td>
+                        <td th:text="${plat.categorie.nom}">Catégorie</td>
+                        <td th:text="${plat.nbCalories}">Calories</td>
+                        <td th:text="${plat.nbLipides}">Lipides</td>
+                        <td th:text="${plat.nbProteines}">Protéines</td>
+                        <td th:text="${plat.nbGlucides}">Glucides</td>
+                        <td>
+                            <a th:href="@{/plats/edit/{id}(id=${plat.id})}" class="btn btn-sm btn-primary">Modifier</a>
+                            <a th:href="@{/plats/delete/{id}(id=${plat.id})}" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce plat ?')">
+                                Supprimer
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 
