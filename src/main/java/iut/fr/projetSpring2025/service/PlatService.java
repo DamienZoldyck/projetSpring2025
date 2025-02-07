@@ -30,4 +30,8 @@ public class PlatService {
     public void deletePlat(Long id) {
         platRepository.deleteById(id);
     }
+
+    public List<Plat> getPlatsWithFilters(Long categorieId, Integer caloriesMin, Integer caloriesMax) {
+        return platRepository.findWithFilters(categorieId, caloriesMin, caloriesMax);
+    }
 } 

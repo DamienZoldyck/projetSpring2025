@@ -43,7 +43,11 @@
                 <label for="categorie">Catégorie</label>
                 <select class="form-control" id="categorie" th:field="*{categorie}" required>
                     <option value="">Sélectionnez une catégorie</option>
-                    <!-- Les options seront ajoutées dynamiquement -->
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:text="${cat.nom}">
+                        Catégorie
+                    </option>
                 </select>
             </div>
 

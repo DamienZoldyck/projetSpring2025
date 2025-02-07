@@ -46,7 +46,12 @@
                             <label for="categorie">Catégorie</label>
                             <select class="form-control" id="categorie" name="categorie">
                                 <option value="">Toutes les catégories</option>
-                                <!-- Les options seront ajoutées dynamiquement -->
+                                <option th:each="cat : ${categories}"
+                                        th:value="${cat.id}"
+                                        th:text="${cat.nom}"
+                                        th:selected="${param.categorie != null and param.categorie[0] == cat.id.toString()}">
+                                    Catégorie
+                                </option>
                             </select>
                         </div>
                     </div>

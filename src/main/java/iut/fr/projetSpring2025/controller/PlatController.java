@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import iut.fr.projetSpring2025.model.Plat;
+import iut.fr.projetSpring2025.service.CategorieService;
 import iut.fr.projetSpring2025.service.PlatService;
 
 @Controller
@@ -19,15 +21,34 @@ public class PlatController {
     @Autowired
     private PlatService platService;
 
+    @Autowired
+    private CategorieService categorieService;
+
     @GetMapping
-    public String listPlats(Model model) {
-        model.addAttribute("plats", platService.getAllPlats());
+    public String listPlats(
+            @RequestParam(required = false) String categorie,
+            @RequestParam(required = false) Integer caloriesMin,
+            @RequestParam(required = false) Integer caloriesMax,
+            Model model) {
+        
+        Long categorieId = null;
+        try {
+            if (categorie != null && !categorie.isEmpty()) {
+                categorieId = Long.parseLong(categorie);
+            }
+        } catch (NumberFormatException e) {
+            // Ignorer l'erreur de parsing et continuer sans filtre de catégorie
+        }
+
+        model.addAttribute("plats", platService.getPlatsWithFilters(categorieId, caloriesMin, caloriesMax));
+        model.addAttribute("categories", categorieService.getAllCategories());
         return "plats/list";
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("plat", new Plat());
+        model.addAttribute("categories", categorieService.getAllCategories());
         return "plats/form";
     }
 
@@ -42,6 +63,7 @@ public class PlatController {
         Plat plat = platService.getPlatById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid plat Id:" + id));
         model.addAttribute("plat", plat);
+        model.addAttribute("categories", categorieService.getAllCategories());
         return "plats/form";
     }
 
