@@ -1,6 +1,10 @@
 package iut.fr.projetSpring2025.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.itextpdf.text.DocumentException;
 
 import iut.fr.projetSpring2025.model.Menu;
 import iut.fr.projetSpring2025.service.MenuService;
@@ -58,4 +64,51 @@ public class MenuController {
         model.addAttribute("plats", platService.getAllPlats());
         return "menus/form";
     }
-}
+
+    @PostMapping("/edit/{id}")
+    public String updateMenu(@PathVariable Long id, @ModelAttribute Menu menu) {
+        menu.setId(id);
+        menuService.saveMenu(menu);
+        return "redirect:/menus";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteMenu(@PathVariable Long id) {
+        menuService.deleteMenu(id);
+        return "redirect:/menus";
+    }
+
+    @GetMapping("/export/pdf")
+    public ResponseEntity<byte[]> exportMenusPdf() {
+        try {
+            byte[] pdfBytes = menuService.generateMenusPdf();
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "menus.pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        } catch (DocumentException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{id}/export/pdf")
+    public ResponseEntity<byte[]> exportMenuPdf(@PathVariable Long id) {
+        try {
+            byte[] pdfBytes = menuService.generateMenuPdf(id);
+            
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", "menu-" + id + ".pdf");
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        } catch (DocumentException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+} 
