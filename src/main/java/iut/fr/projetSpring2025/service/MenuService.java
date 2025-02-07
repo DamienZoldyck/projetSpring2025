@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.BaseColor;
@@ -160,5 +162,9 @@ public class MenuService {
         document.close();
         
         return outputStream.toByteArray();
+    }
+
+    public Page<Menu> getAllMenusPaginated(int page, int size) {
+        return menuRepository.findAll(PageRequest.of(page, size));
     }
 } 

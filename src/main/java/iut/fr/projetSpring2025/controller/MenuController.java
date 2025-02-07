@@ -1,6 +1,7 @@
 package iut.fr.projetSpring2025.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,14 +33,16 @@ public class MenuController {
 
     @GetMapping
     public String listMenus(
-            @RequestParam(required = false) Double prixMin,
-            @RequestParam(required = false) Double prixMax,
-            @RequestParam(required = false) Integer caloriesMin,
-            @RequestParam(required = false) Integer caloriesMax,
-            @RequestParam(required = false) String nom,
+            @RequestParam(defaultValue = "0") int page,
             Model model) {
         
-        model.addAttribute("menus", menuService.getMenusWithFilters(prixMin, prixMax, caloriesMin, caloriesMax, nom));
+        int pageSize = 10;
+        Page<Menu> menuPage = menuService.getAllMenusPaginated(page, pageSize);
+        
+        model.addAttribute("menus", menuPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", menuPage.getTotalPages());
+        model.addAttribute("totalItems", menuPage.getTotalElements());
         return "menus/list";
     }
 

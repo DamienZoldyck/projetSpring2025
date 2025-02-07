@@ -117,6 +117,30 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div>
+                Affichage de <span th:text="${menus.size()}">0</span> menus sur <span th:text="${totalItems}">0</span>
+            </div>
+            <nav th:if="${totalPages > 1}">
+                <ul class="pagination">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/menus(page=${currentPage - 1})}">&laquo;</a>
+                    </li>
+                    
+                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${pageNum == currentPage} ? 'active'">
+                        <a class="page-link" 
+                           th:href="@{/menus(page=${pageNum})}"
+                           th:text="${pageNum + 1}">1</a>
+                    </li>
+                    
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/menus(page=${currentPage + 1})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
