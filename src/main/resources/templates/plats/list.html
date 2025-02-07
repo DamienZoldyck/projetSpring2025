@@ -43,6 +43,13 @@
                 <form th:action="@{/plats}" method="get" class="row">
                     <div class="col-md-3">
                         <div class="form-group">
+                            <label for="search">Rechercher</label>
+                            <input type="text" class="form-control" id="search" name="search" 
+                                   th:value="${param.search}" placeholder="Nom du plat...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
                             <label for="categorie">Catégorie</label>
                             <select class="form-control" id="categorie" name="categorie">
                                 <option value="">Toutes les catégories</option>
@@ -107,6 +114,30 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div>
+                Affichage de <span th:text="${plats.size()}">0</span> plats sur <span th:text="${totalItems}">0</span>
+            </div>
+            <nav th:if="${totalPages > 1}">
+                <ul class="pagination">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/plats(page=${currentPage - 1}, search=${param.search}, categorie=${param.categorie}, caloriesMin=${param.caloriesMin}, caloriesMax=${param.caloriesMax})}">&laquo;</a>
+                    </li>
+                    
+                    <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${pageNum == currentPage} ? 'active'">
+                        <a class="page-link" 
+                           th:href="@{/plats(page=${pageNum}, search=${param.search}, categorie=${param.categorie}, caloriesMin=${param.caloriesMin}, caloriesMax=${param.caloriesMax})}"
+                           th:text="${pageNum + 1}">1</a>
+                    </li>
+                    
+                    <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/plats(page=${currentPage + 1}, search=${param.search}, categorie=${param.categorie}, caloriesMin=${param.caloriesMin}, caloriesMax=${param.caloriesMax})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 

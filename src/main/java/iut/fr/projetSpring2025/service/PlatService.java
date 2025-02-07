@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import iut.fr.projetSpring2025.model.Plat;
@@ -31,7 +33,18 @@ public class PlatService {
         platRepository.deleteById(id);
     }
 
-    public List<Plat> getPlatsWithFilters(Long categorieId, Integer caloriesMin, Integer caloriesMax) {
-        return platRepository.findWithFilters(categorieId, caloriesMin, caloriesMax);
+    public List<Plat> getPlatsWithFilters(String search, Long categorieId, Integer caloriesMin, Integer caloriesMax) {
+        return platRepository.findWithFilters(search, categorieId, caloriesMin, caloriesMax, PageRequest.of(0, Integer.MAX_VALUE))
+            .getContent();
+    }
+
+    public Page<Plat> getPlatsWithFilters(String search, Long categorieId, Integer caloriesMin, Integer caloriesMax, int page, int size) {
+        return platRepository.findWithFilters(
+            search, 
+            categorieId, 
+            caloriesMin, 
+            caloriesMax, 
+            PageRequest.of(page, size)
+        );
     }
 } 
