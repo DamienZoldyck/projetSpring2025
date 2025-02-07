@@ -86,12 +86,7 @@ public class Menu {
 
     // Méthode pour calculer le total des calories
     public int calculateTotalCalories() {
-        if (plats == null) {
-            return 0;
-        }
-        return plats.stream()
-                .mapToInt(Plat::getNbCalories)
-                .sum();
+        return plats.stream().mapToInt(Plat::getNbCalories).sum();
     }
 
     @Override

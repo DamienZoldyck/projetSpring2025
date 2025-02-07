@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import iut.fr.projetSpring2025.model.Menu;
 import iut.fr.projetSpring2025.service.MenuService;
@@ -24,8 +25,15 @@ public class MenuController {
     private PlatService platService;
 
     @GetMapping
-    public String listMenus(Model model) {
-        model.addAttribute("menus", menuService.getAllMenus());
+    public String listMenus(
+            @RequestParam(required = false) Double prixMin,
+            @RequestParam(required = false) Double prixMax,
+            @RequestParam(required = false) Integer caloriesMin,
+            @RequestParam(required = false) Integer caloriesMax,
+            @RequestParam(required = false) String nom,
+            Model model) {
+        
+        model.addAttribute("menus", menuService.getMenusWithFilters(prixMin, prixMax, caloriesMin, caloriesMax, nom));
         return "menus/list";
     }
 
@@ -50,17 +58,4 @@ public class MenuController {
         model.addAttribute("plats", platService.getAllPlats());
         return "menus/form";
     }
-
-    @PostMapping("/edit/{id}")
-    public String updateMenu(@PathVariable Long id, @ModelAttribute Menu menu) {
-        menu.setId(id);
-        menuService.saveMenu(menu);
-        return "redirect:/menus";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteMenu(@PathVariable Long id) {
-        menuService.deleteMenu(id);
-        return "redirect:/menus";
-    }
-} 
+}

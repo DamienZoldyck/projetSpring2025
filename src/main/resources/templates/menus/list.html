@@ -35,6 +35,50 @@
             <a href="/menus/create" class="btn btn-primary">Nouveau Menu</a>
         </div>
 
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Filtres</h5>
+            </div>
+            <div class="card-body">
+                <form action="/menus" method="get" class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="nom">Nom du Menu</label>
+                            <input type="text" class="form-control" id="nom" name="nom" placeholder="Rechercher par nom">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="prixMin">Prix Min</label>
+                            <input type="number" step="0.01" class="form-control" id="prixMin" name="prixMin">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="prixMax">Prix Max</label>
+                            <input type="number" step="0.01" class="form-control" id="prixMax" name="prixMax">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="caloriesMin">Calories Min</label>
+                            <input type="number" class="form-control" id="caloriesMin" name="caloriesMin">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="caloriesMax">Calories Max</label>
+                            <input type="number" class="form-control" id="caloriesMax" name="caloriesMax">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary mt-4">Filtrer</button>
+                        <a href="/menus" class="btn btn-secondary mt-4">Réinitialiser</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -54,11 +98,7 @@
                         <td th:text="${menu.calculateTotalCalories()}">Total calories</td>
                         <td>
                             <a th:href="@{/menus/edit/{id}(id=${menu.id})}" class="btn btn-sm btn-primary">Modifier</a>
-                            <a th:href="@{/menus/delete/{id}(id=${menu.id})}" 
-                               class="btn btn-sm btn-danger"
-                               onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce menu ?')">
-                                Supprimer
-                            </a>
+                            <a th:href="@{/menus/delete/{id}(id=${menu.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce menu ?')">Supprimer</a>
                         </td>
                     </tr>
                 </tbody>
