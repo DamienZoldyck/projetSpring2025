@@ -22,7 +22,6 @@ public class Plat {
     @JoinColumn(name = "categorie_id")
     private Categorie categorie;
 
-    // Constructeurs
     public Plat() {
     }
 
@@ -35,7 +34,6 @@ public class Plat {
         this.categorie = categorie;
     }
 
-    // Getters
     public Long getId() {
         return id;
     }
@@ -64,7 +62,6 @@ public class Plat {
         return categorie;
     }
 
-    // Setters
     public void setId(Long id) {
         this.id = id;
     }
@@ -93,7 +90,6 @@ public class Plat {
         this.categorie = categorie;
     }
 
-    // Méthodes utilitaires
     @Override
     public String toString() {
         return "Plat{" +
