@@ -68,20 +68,17 @@ public class MenuService {
         
         document.open();
         
-        // Add title
         Font titleFont = new Font(FontFamily.HELVETICA, 18, Font.BOLD);
         Paragraph title = new Paragraph("Liste des Menus", titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(20);
         document.add(title);
         
-        // Create table
         PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(100);
         table.setSpacingBefore(10f);
         table.setSpacingAfter(10f);
         
-        // Add headers
         Stream.of("Nom", "Prix", "Nombre de plats", "Total calories")
             .forEach(columnTitle -> {
                 PdfPCell header = new PdfPCell();
@@ -93,7 +90,6 @@ public class MenuService {
                 table.addCell(header);
             });
         
-        // Add data
         for (Menu menu : getAllMenus()) {
             table.addCell(menu.getNom());
             table.addCell(String.format("%.2f €", menu.getPrix()));
@@ -117,28 +113,24 @@ public class MenuService {
         
         document.open();
         
-        // Titre du menu
         Font titleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
         Paragraph title = new Paragraph(menu.getNom(), titleFont);
         title.setAlignment(Element.ALIGN_CENTER);
         title.setSpacingAfter(20);
         document.add(title);
         
-        // Informations générales
         Font subtitleFont = new Font(Font.FontFamily.HELVETICA, 14, Font.BOLD);
         document.add(new Paragraph("Informations générales", subtitleFont));
         document.add(new Paragraph("Prix: " + String.format("%.2f €", menu.getPrix())));
         document.add(new Paragraph("Calories totales: " + menu.calculateTotalCalories()));
         document.add(new Paragraph("\n"));
         
-        // Liste des plats
         document.add(new Paragraph("Plats du menu", subtitleFont));
         PdfPTable table = new PdfPTable(4);
         table.setWidthPercentage(100);
         table.setSpacingBefore(10f);
         table.setSpacingAfter(10f);
         
-        // En-têtes
         Stream.of("Nom", "Catégorie", "Calories", "Valeurs nutritionnelles")
             .forEach(columnTitle -> {
                 PdfPCell header = new PdfPCell();
@@ -150,13 +142,11 @@ public class MenuService {
                 table.addCell(header);
             });
         
-        // Données des plats
         for (Plat plat : menu.getPlats()) {
             table.addCell(plat.getNom());
             table.addCell(plat.getCategorie().getNom());
             table.addCell(String.valueOf(plat.getNbCalories()));
             
-            // Valeurs nutritionnelles
             String nutritionalInfo = String.format(
                 "Protéines: %dg\nLipides: %dg\nGlucides: %dg",
                 plat.getNbProteines(),

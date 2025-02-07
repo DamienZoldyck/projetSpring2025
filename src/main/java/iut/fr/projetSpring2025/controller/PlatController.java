@@ -40,7 +40,7 @@ public class PlatController {
                 categorieId = Long.parseLong(categorie);
             }
         } catch (NumberFormatException e) {
-            // Ignorer l'erreur de parsing
+            e.printStackTrace();
         }
 
         int pageSize = 10;

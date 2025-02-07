@@ -12,7 +12,6 @@ public class Categorie {
     private Long id;
     private String nom;
 
-    // Constructeurs
     public Categorie() {
     }
 
@@ -20,7 +19,6 @@ public class Categorie {
         this.nom = nom;
     }
 
-    // Getters
     public Long getId() {
         return id;
     }
@@ -29,7 +27,6 @@ public class Categorie {
         return nom;
     }
 
-    // Setters
     public void setId(Long id) {
         this.id = id;
     }
@@ -38,7 +35,6 @@ public class Categorie {
         this.nom = nom;
     }
 
-    // Méthodes utilitaires
     @Override
     public String toString() {
         return "Categorie{" +

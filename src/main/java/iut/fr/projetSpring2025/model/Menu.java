@@ -27,7 +27,6 @@ public class Menu {
     )
     private List<Plat> plats = new ArrayList<>();
 
-    // Constructeurs
     public Menu() {
     }
 
@@ -36,7 +35,6 @@ public class Menu {
         this.prix = prix;
     }
 
-    // Getters
     public Long getId() {
         return id;
     }
@@ -53,7 +51,6 @@ public class Menu {
         return plats;
     }
 
-    // Setters
     public void setId(Long id) {
         this.id = id;
     }
@@ -70,7 +67,6 @@ public class Menu {
         this.plats = plats;
     }
 
-    // Méthodes utilitaires pour la gestion des plats
     public void addPlat(Plat plat) {
         if (plats == null) {
             plats = new ArrayList<>();
@@ -84,7 +80,6 @@ public class Menu {
         }
     }
 
-    // Méthode pour calculer le total des calories
     public int calculateTotalCalories() {
         return plats.stream().mapToInt(Plat::getNbCalories).sum();
     }
